@@ -1,0 +1,206 @@
+{
+  "capabilities": [
+    { "category": "turns", "visible": true, "note": "ordered user and assistant messages with timestamps" },
+    { "category": "loaded-context", "visible": true, "note": "system prompt recorded per session, with instruction files and advertised skills" },
+    { "category": "retrieval", "visible": true, "note": "read, bash and codemode calls with their arguments and output" },
+    { "category": "mutation", "visible": true, "note": "write, edit and shell writes with results" },
+    { "category": "commands", "visible": true, "note": "bash commands with exit codes and output" },
+    { "category": "delegation", "visible": true, "note": "subagent tool advertised; no child launched in the window" },
+    { "category": "compaction", "visible": false, "note": "no compaction or truncation entries recorded in the eligible session" },
+    { "category": "approval", "visible": false, "note": "no permission prompt or denial recorded; the project is trusted in trust.json" },
+    { "category": "timing", "visible": true, "note": "per-message timestamps" }
+  ],
+  "coverage": {
+    "sessions_discovered": 108,
+    "sessions_excluded": 107,
+    "sessions_eligible": 1,
+    "episodes": 2,
+    "window_days": 1,
+    "artifacts_inventoried": 16,
+    "artifacts_loaded_at_least_once": 15,
+    "always_loaded_lines": 29,
+    "episodes_with_signals": 2
+  },
+  "artifacts": [
+    { "artifact_id": "A01", "layer": "project-instructions", "path": "AGENTS.md", "size": { "value": 8, "unit": "lines" }, "status": "used" },
+    { "artifact_id": "A02", "layer": "skill", "path": ".agents/skills/read/SKILL.md", "size": { "value": 53, "unit": "lines" }, "status": "used" },
+    { "artifact_id": "A03", "layer": "skill", "path": ".agents/skills/read/scripts/find-contract.mjs, cut-diff.mjs", "size": { "value": 765, "unit": "lines" }, "status": "never-loaded" },
+    { "artifact_id": "A04", "layer": "skill", "path": ".agents/skills/read/scripts/log-entry.mjs", "size": { "value": 9, "unit": "lines" }, "status": "used" },
+    { "artifact_id": "A05", "layer": "skill", "path": ".agents/skills/handoff/SKILL.md", "size": { "value": 14, "unit": "lines" }, "status": "used" },
+    { "artifact_id": "A06", "layer": "skill", "path": ".agents/skills/pipeline-doctor/SKILL.md", "size": { "value": 49, "unit": "lines" }, "status": "used" },
+    { "artifact_id": "A07", "layer": "skill", "path": ".agents/skills/pipeline-doctor/reference/pipeline-doctor.md", "size": { "value": 507, "unit": "lines" }, "status": "used" },
+    { "artifact_id": "A08", "layer": "hook", "path": ".pi/extensions/pipeline-doctor-trigger.ts", "size": { "value": 118, "unit": "lines" }, "status": "used" },
+    { "artifact_id": "A09", "layer": "template", "path": "docs/index.md", "size": { "value": 14, "unit": "lines" }, "status": "used" },
+    { "artifact_id": "A10", "layer": "template", "path": "docs/pipeline-audit.md", "size": { "value": 680, "unit": "lines" }, "status": "used" },
+    { "artifact_id": "A11", "layer": "template", "path": "docs/what-I-see.md", "size": { "value": 2, "unit": "lines" }, "status": "used" },
+    { "artifact_id": "B01", "layer": "project-instructions", "path": "~/.pi/agent/AGENTS.md", "size": { "value": 21, "unit": "lines" }, "status": "used" },
+    { "artifact_id": "B02", "layer": "agent-prompt", "path": "~/.pi/agent/agents/summarize.md", "size": { "value": 19, "unit": "lines" }, "status": "used" },
+    { "artifact_id": "B03", "layer": "model-choice", "path": "~/.pi/agent/settings.json", "size": { "value": 9, "unit": "lines" }, "status": "used" },
+    { "artifact_id": "B04", "layer": "tool-schema", "path": "~/.pi/agent/mcp.json", "size": { "value": 7, "unit": "lines" }, "status": "used" },
+    { "artifact_id": "B05", "layer": "hook", "path": "~/.pi/agent/extensions/herdr-agent-state.ts", "size": { "value": 261, "unit": "lines" }, "status": "used" }
+  ],
+  "signals": [
+    { "signal": "instruction-missed", "episode": "E01", "anchor": "entries 41-44", "note": "A bulk read printed three whole receipts into the transcript; the files were masked only after the assistant noticed.", "severity": "blocking" },
+    { "signal": "instruction-missed", "episode": "E02", "anchor": "entries 69-73", "note": "A peek at a receipt file printed a whole token one message after the explicit mask-before-read rule was written.", "severity": "blocking" },
+    { "signal": "tool-friction", "episode": "E02", "anchor": "entries 174-176", "note": "A script parsed a prose reply as JSON; the next script then found nothing where the failed one had stored its value.", "severity": "costly" },
+    { "signal": "tool-friction", "episode": "E02", "anchor": "entries 212-214", "note": "A debrief payload was rebuilt from scratch because a store key set in a discarded earlier script was absent.", "severity": "costly" },
+    { "signal": "tool-friction", "episode": "E02", "anchor": "entry 159", "note": "A query mixed a string and a number and exited 1; the same values were fetched again with a different template.", "severity": "noisy" },
+    { "signal": "loop", "episode": "E02", "anchor": "entries 208-214", "note": "Three debrief attempts measured a 400-character field by round trip: 426 characters, then 403, then accepted.", "severity": "costly" },
+    { "signal": "instruction-stale", "episode": "E01", "anchor": "entry 62", "note": "The project instruction named a repo-root log that does not exist; the note recorded the mismatch and logs went per lesson.", "severity": "noisy" },
+    { "signal": "recovery-cost", "episode": "E02", "anchor": "entries 198-205", "note": "A submit was refused after the tickets were closed with one blanket reason; the repair reopened one and resubmitted.", "severity": "costly" },
+    { "signal": "coverage-gap", "episode": "E02", "anchor": "entries 166-172, 179-181", "note": "After a step-accepted reply the agent polled the downloaded export and told the human nothing was needed; the live update was on the challenge page.", "severity": "costly" },
+    { "signal": "recovery-cost", "episode": "E02", "anchor": "entries 155-157", "note": "The first rendered page ran two footnote sentences together; reading the screenshot found it and the render was repeated after the fix.", "severity": "noisy" }
+  ],
+  "findings": [
+    {
+      "finding_id": "F01",
+      "status": "confirmed",
+      "attribution": "instruction-missed",
+      "layer": "project-instructions",
+      "counts": { "instances": 2, "episodes": 2, "blocking": 1 },
+      "frequency": "every-eligible-episode",
+      "confidence": "high",
+      "root_cause": "The mask rule is prose in two always-loaded instruction files and a helper script, and no check runs at the moment a file is read, so a raw read of a receipt file stays possible.",
+      "evidence": ["E01 entries 41-44", "E02 entries 69-73"]
+    },
+    {
+      "finding_id": "F02",
+      "status": "probable",
+      "attribution": "instruction-stale",
+      "layer": "project-instructions",
+      "counts": { "instances": 1, "episodes": 1, "blocking": 0 },
+      "frequency": "once",
+      "confidence": "high",
+      "root_cause": "The project instruction still names one repo-root log, while every lesson writes its own log, so the rule points at a file that does not exist.",
+      "evidence": ["E01 entry 62"]
+    },
+    {
+      "finding_id": "F03",
+      "status": "probable",
+      "attribution": "coverage-gap",
+      "layer": "tool-schema",
+      "counts": { "instances": 3, "episodes": 1, "blocking": 0 },
+      "frequency": "once",
+      "confidence": "medium",
+      "root_cause": "MCP replies and script memory are treated as predictable: a prose reply is parsed as JSON, and a value stored by a script that then throws is assumed to survive; nothing asks for a shape check or a durable copy first.",
+      "evidence": ["E02 entries 174-176", "E02 entries 212-214", "E02 entry 159"]
+    },
+    {
+      "finding_id": "F04",
+      "status": "probable",
+      "attribution": "coverage-gap",
+      "layer": "template",
+      "counts": { "instances": 1, "episodes": 1, "blocking": 0 },
+      "frequency": "once",
+      "confidence": "medium",
+      "root_cause": "The debrief field limits are known only from the reply, so the payload is measured by submitting it; nothing counts the field locally first.",
+      "evidence": ["E02 entries 208-214"]
+    },
+    {
+      "finding_id": "F05",
+      "status": "probable",
+      "attribution": "no-artifact",
+      "layer": "harness",
+      "counts": { "instances": 1, "episodes": 1, "blocking": 0 },
+      "frequency": "once",
+      "confidence": "low",
+      "root_cause": "A submit was refused because the tickets were closed with one blanket reason; no editable artifact held the close reason the desk expected.",
+      "evidence": ["E02 entries 198-205"]
+    },
+    {
+      "finding_id": "F06",
+      "status": "probable",
+      "attribution": "coverage-gap",
+      "layer": "project-instructions",
+      "counts": { "instances": 1, "episodes": 1, "blocking": 0 },
+      "frequency": "once",
+      "confidence": "medium",
+      "root_cause": "Nothing says a downloaded export is a dated copy and that the live state sits on the challenge page, so the wait was aimed at a file that could not change and a human question did the re-fetch.",
+      "evidence": ["E02 entries 166-172", "E02 entries 179-181"]
+    },
+    {
+      "finding_id": "F07",
+      "status": "probable",
+      "attribution": "coverage-gap",
+      "layer": "template",
+      "counts": { "instances": 1, "episodes": 1, "blocking": 0 },
+      "frequency": "once",
+      "confidence": "low",
+      "root_cause": "No written check says to render the page and read the image before submitting, so the one catch depended on the model choosing to look.",
+      "evidence": ["E02 entries 155-157"]
+    }
+  ],
+  "proposals": [
+    {
+      "proposal_id": "P01",
+      "finding_id": "F01",
+      "target": { "artifact_id": "A02", "location": "new section 4, between the end of '## 3. When asked to name the newest model or product' and '## Example'" },
+      "layer": "skill",
+      "remedy": "mechanize",
+      "before": null,
+      "after": "## 4. Before you open a file that may hold a receipt\n\n**When:** a file, log or dump you are about to read may contain a token, ticket, key or receipt.\n\n1. Do not `cat`, `head`, `grep`, `read` or paste such a file. Run `node <skill>/scripts/mask.mjs <file>`; it prints the file with every `v1.`, `gho_`, `ghp_` and `sk-` value cut to `first6…last4`.\n2. A receipt that must stay whole to work stays untouched and out of the transcript; say which file you left alone.\n\n**Done:** every value in your message is in `first6…last4` form and the command you ran was the script.",
+      "predicted_effect": "Receipt reads run through one script instead of a remembered habit; a comparable episode shows no whole receipt in the transcript.",
+      "verification": "Next 3 sessions: zero whole receipts in any message, and every receipt-bearing read names the mask script.",
+      "cost": { "loaded_lines": 0, "maintenance": "One 14-line script beside log-entry.mjs; share its mask patterns so the two cannot drift." },
+      "risk": "Over-triggering on ordinary logs slows reads; scope it to files that matched a receipt pattern, not every file.",
+      "confidence": "high"
+    },
+    {
+      "proposal_id": "P02",
+      "finding_id": "F01",
+      "target": { "artifact_id": "B01", "location": "# Secrets, lines 13-17" },
+      "layer": "project-instructions",
+      "remedy": "relocate",
+      "before": "Tokens, tickets, keys and receipts never appear in my output, in a log or in a summary. Mask them `first6…last4`.\n\n- Before reading a file that may hold one, filter it through a mask instead of `cat`.\n- Never print an environment variable's value; name the variable instead.\n- When a receipt has to stay whole to work, leave the file untouched and keep its value out of the transcript.",
+      "after": "Tokens, tickets, keys and receipts never appear in my output, in a log or in a summary. Mask them `first6…last4`.\n\n- Read a file that may hold a receipt only through the `read` skill's mask script, never `cat`, `head` or `grep`; a receipt that must stay whole to work stays untouched and out of the transcript.\n- Never print an environment variable's value; name the variable instead.",
+      "predicted_effect": "One pointer replaces three bullets; the read-time command lives in the skill that loads when such a read is due.",
+      "verification": "Next audit: the global instruction file holds no read-time masking prose beyond one pointer, and receipt leaks stay at zero.",
+      "cost": { "loaded_lines": -1, "maintenance": "None; removes three bullets the read skill now carries." },
+      "risk": "A pointer into a skill is invisible until the skill is opened; the project bullet and the script remain as the second layer.",
+      "confidence": "medium"
+    },
+    {
+      "proposal_id": "P03",
+      "finding_id": "F02",
+      "target": { "artifact_id": "A01", "location": "third bullet, the log path" },
+      "layer": "project-instructions",
+      "remedy": "clarify",
+      "before": "- Append every request and reply to `log.txt` with tickets, tokens and keys masked (`first6…last4`); never print env values. Use `.agents/skills/read/scripts/log-entry.mjs` from the repo root.",
+      "after": "- Append every request and reply to `s01eNN/log.txt` with tickets, tokens and keys masked (`first6…last4`); never print env values. Use `.agents/skills/read/scripts/log-entry.mjs` from the repo root.",
+      "predicted_effect": "The log rule names the file the folder layout actually has; a reader no longer has to infer the lesson folder.",
+      "verification": "Next session writes to s01eNN/log.txt, no repo-root log appears, and the instruction contains no bare log.txt path.",
+      "cost": { "loaded_lines": 0, "maintenance": "None; one word changed in a line that already loads." },
+      "risk": "If a future lesson keeps logs outside s01eNN, the rule will not cover it.",
+      "confidence": "high"
+    },
+    {
+      "proposal_id": "P04",
+      "finding_id": "F06",
+      "target": { "artifact_id": "A01", "location": "new bullet after the read-skill bullet" },
+      "layer": "project-instructions",
+      "remedy": "clarify",
+      "before": null,
+      "after": "- A step-accepted reply is not done: re-fetch the challenge page before waiting or resubmitting; a downloaded export is a dated copy.",
+      "predicted_effect": "A step-accepted reply sends the agent to the live page first, so the desk update is read without a human question.",
+      "verification": "Next 2 challenge episodes: every progress reply is followed by a page fetch before any wait or resubmit, and no watcher is started on an export hash.",
+      "cost": { "loaded_lines": 1, "maintenance": "None; one bullet." },
+      "risk": "Over-triggering: a page fetch on every reply costs one call, and a challenge whose live state really is the export would be fetched for nothing.",
+      "confidence": "medium"
+    }
+  ],
+  "not_proposed": [
+    { "finding_id": "F03", "reason": "The missing rule belongs in the codemode tool description, which is harness-layer and never a proposal target; one episode of evidence." },
+    { "finding_id": "F04", "reason": "One episode; a template is a rung-5 remedy and recurrence allows only clarify or example here, and the limits themselves are the course's." },
+    { "finding_id": "F05", "reason": "No-artifact: the refusal turned on a close reason the course never explains, and no local check can read a remote repo's intent." },
+    { "finding_id": "F07", "reason": "One episode; the check that worked was a render-and-look step, and a template for it is rung 5, which recurrence does not allow here." }
+  ],
+  "limitations": [
+    { "code": "narrow-window", "signal": null, "finding_id": null },
+    { "code": "harness-capability-missing", "signal": "compaction", "finding_id": null },
+    { "code": "harness-capability-missing", "signal": "approval", "finding_id": null },
+    { "code": "extraction-gap", "signal": "tool-friction", "finding_id": null },
+    { "code": "no-opportunity", "signal": "brief-gap", "finding_id": null },
+    { "code": "no-opportunity", "signal": "handoff-loss", "finding_id": null },
+    { "code": "no-opportunity", "signal": "duplicate-work", "finding_id": null }
+  ]
+}
