@@ -9,7 +9,7 @@ A deployment plan takes a working tree to a release a stranger can install or
 reach, and it is derived from the tree, not assumed: the repo says what exists,
 its shape says what shipping it needs, and only the leftovers become questions.
 
-Write it to `docs/deployment-plan.md` in the target repo, against a named commit.
+Write it to `deployment-plan.md` in the documents directory of the target repo, against a named commit.
 
 Two budgets. **Facts** come from the repo and carry a `file:line`. **Intent** comes
 from the human, and a guessed intent is the one thing that costs a rewrite — so
